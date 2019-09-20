@@ -37,7 +37,7 @@ main:
     sw      s0, 24(sp)
     addi    s0, sp, 32
     mv      a0, zero
-    sw      a0, -12(s0)
+    fsw      10.5, -12(s0)
     addi    a1, zero, 10
     sw      a1, -16(s0)
     addi    a1, zero, 20
