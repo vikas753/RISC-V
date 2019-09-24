@@ -70,7 +70,7 @@ main:
     addi    s0, sp, 32
     mv      a0, zero
     sw      a0, -12(s0)
-    addi    a1, zero, 5
+    addi    a1, zero, 12
     sw      a0, -20(s0)
     add     a0, zero, a1
     call    factorial
