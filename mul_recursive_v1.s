@@ -7,6 +7,7 @@ mul:
     sw      a1, -20(s0)
     lw      a0, -16(s0)
     mv      a1, zero
+	#check if operand 2 is zero to exit from recursive tree
     beq     a0, a1, .LBB0_2
     j       .LBB0_1
 .LBB0_1:
@@ -19,6 +20,8 @@ mul:
     sw      a0, -12(s0)
     j       .LBB0_4
 .LBB0_3:
+    # add the number to itself and then decrement operand 2 
+	# recursively call multiply api again with above operands
     lw      a0, -16(s0)
     lw      a1, -20(s0)
     addi    a1, a1, -1
@@ -41,9 +44,11 @@ main:
     addi    s0, sp, 32
     mv      a0, zero
     sw      a0, -12(s0)
+	#operand 1
     addi    a1, zero, 10
     sw      a1, -16(s0)
-    addi    a1, zero, 20
+    #operand 2
+	addi    a1, zero, 20
     sw      a1, -20(s0)
     lw      a1, -16(s0)
     lw      a2, -20(s0)

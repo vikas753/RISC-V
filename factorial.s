@@ -44,11 +44,13 @@ factorial:
 .LBB1_1:                                
     lw      a0, -20(s0)
     lw      a1, -12(s0)
+	# Check if we reached to value 1 at operand 2 , then exit
     blt     a1, a0, .LBB1_4
     j       .LBB1_2
 .LBB1_2:                                
     lw      a0, -16(s0)
     lw      a1, -20(s0)
+	# calls multiply api with input value and (input -1) value . 
     call    mul
     sw      a0, -16(s0)
     j       .LBB1_3
@@ -70,10 +72,12 @@ main:
     addi    s0, sp, 32
     mv      a0, zero
     sw      a0, -12(s0)
+	#operand for factorial calculation
     addi    a1, zero, 12
     sw      a0, -20(s0)
     add     a0, zero, a1
     call    factorial
+	#output value
     sw      a0, -16(s0)
     lw      s0, 24(sp)
     lw      ra, 28(sp)
