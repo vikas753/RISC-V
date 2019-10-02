@@ -28,18 +28,18 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
 // Print a memory read record
 VOID RecordMemRead(VOID * ip, VOID * addr)
 {
-    OutFile << "%p: R %p\n", ip, addr;
+    OutFile << ip << " R " << addr << endl;
 }
 
 // Print a memory write record
 VOID RecordMemWrite(VOID * ip, VOID * addr)
 {
-    OutFile << "%p: W %p\n", ip, addr;
+    OutFile << ip << " W " << addr << endl;
 }
 
 // This function is called before every instruction is executed
 // and prints the IP
-VOID printip(VOID *ip) { OutFile << "%p\n", ip; icount++; }
+VOID printip(VOID *ip) { OutFile << "IP : "<< ip << endl; icount++; }
 
 // Pin calls this function every time a new instruction is encountered
 VOID Instruction(INS ins, VOID *v)
@@ -79,7 +79,7 @@ VOID Instruction(INS ins, VOID *v)
 // This function is called when the application exits
 VOID Fini(INT32 code, VOID *v)
 {
-	OutFile << " Instruction count = 0x%x" , icount;
+	OutFile << " Instruction count = " << icount << endl;
     OutFile << "#eof\n";
     OutFile.close();
 } 
