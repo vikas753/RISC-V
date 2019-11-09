@@ -19,8 +19,12 @@ using std::endl;
 
 // Global variables to hold the instructions and a file pointer to write output
 static UINT64 icount = 0;
-
-ofstream OutFile;
+static UINT64 readMemoryCount = 0;
+static UINT64 writeMemoryCount = 0;
+static UINT64 branchInstructionCount = 0;
+static UINT64 SyscallInstructionCount = 0;
+static UINT64 StackAccessInstructionCount = 0; 
+ ofstream OutFile;
 
 KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
     "o", "qsort_prof.out", "specify output file name");
@@ -28,14 +32,36 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
 // Print a memory read record
 VOID RecordMemRead(VOID * ip, VOID * addr)
 {
+    readMemoryCount = readMemoryCount + 1;
     OutFile << ip << " R " << addr << endl;
 }
 
 // Print a memory write record
 VOID RecordMemWrite(VOID * ip, VOID * addr)
 {
+    writeMemoryCount = writeMemoryCount + 1;
     OutFile << ip << " W " << addr << endl;
 }
+
+// record a control flow instruction
+VOID RecordIsControlFlow()
+{
+    branchInstructionCount = branchInstructionCount + 1;
+}
+
+// record a control flow instruction
+VOID RecordIsSysCallInstruction()
+{
+    SyscallInstructionCount = SyscallInstructionCount + 1;
+}
+
+// record a control flow instruction
+VOID RecordIsStackAccess()
+{
+    StackAccessInstructionCount = StackAccessInstructionCount + 1;
+}
+
+
 
 // This function is called before every instruction is executed
 // and prints the IP
@@ -47,7 +73,24 @@ VOID Instruction(INS ins, VOID *v)
     // Insert a call to printip before every instruction, and pass it the IP
     INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)printip, IARG_INST_PTR, IARG_END);
 	
-	UINT32 memOperands = INS_MemoryOperandCount(ins);
+    UINT32 memOperands = INS_MemoryOperandCount(ins);
+    
+    if(INS_IsSyscall(ins)|| (INS_IsSysret(ins)))
+    {
+      RecordIsSysCallInstruction();
+    }
+
+    if(INS_IsStackWrite(ins)|| (INS_IsStackRead(ins)))
+    {
+      RecordIsStackAccess();
+    }
+
+
+
+    if(INS_IsControlFlow(ins))
+    {
+      RecordIsControlFlow();
+    }
 
     // Iterate over each memory operand of the instruction.
     for (UINT32 memOp = 0; memOp < memOperands; memOp++)
@@ -78,8 +121,13 @@ VOID Instruction(INS ins, VOID *v)
 
 // This function is called when the application exits
 VOID Fini(INT32 code, VOID *v)
-{
-	OutFile << " Instruction count = " << icount << endl;
+{ 
+    OutFile << " Syscall Instruction count = " << SyscallInstructionCount << endl; 
+    OutFile << " Stack Access Instruction count = " << StackAccessInstructionCount << endl;
+    OutFile << " Branch Instruction count = " << branchInstructionCount << endl;
+    OutFile << " Memory write count = " << writeMemoryCount << endl;
+    OutFile << " Memory read count = " << readMemoryCount << endl;
+    OutFile << " Total Instruction count = " << icount << endl;
     OutFile << "#eof\n";
     OutFile.close();
 } 

@@ -25,9 +25,9 @@ typedef UINT32 CACHE_STATS; // type of cache hit/miss counters
 namespace ITLB
 {
     // instruction TLB: 4 kB pages, 32 entries, fully associative
-    const UINT32 lineSize = 4*KILO;
+    const UINT32 lineSize = 8*KILO;
     const UINT32 cacheSize = 32 * lineSize;
-    const UINT32 associativity = 32;
+    const UINT32 associativity = 1;
     const CACHE_ALLOC::STORE_ALLOCATION allocation = CACHE_ALLOC::STORE_ALLOCATE;
 
     const UINT32 max_sets = cacheSize / (lineSize * associativity);
@@ -42,7 +42,7 @@ namespace DTLB
     // data TLB: 4 kB pages, 32 entries, fully associative
     const UINT32 lineSize = 4*KILO;
     const UINT32 cacheSize = 32 * lineSize;
-    const UINT32 associativity = 32;
+    const UINT32 associativity = 1;
     const CACHE_ALLOC::STORE_ALLOCATION allocation = CACHE_ALLOC::STORE_ALLOCATE;
 
     const UINT32 max_sets = cacheSize / (lineSize * associativity);
@@ -57,7 +57,7 @@ namespace IL1
     // 1st level instruction cache: 32 kB, 32 B lines, 32-way associative
     const UINT32 cacheSize = 32*KILO;
     const UINT32 lineSize = 32;
-    const UINT32 associativity = 32;
+    const UINT32 associativity = 1;
     const CACHE_ALLOC::STORE_ALLOCATION allocation = CACHE_ALLOC::STORE_NO_ALLOCATE;
 
     const UINT32 max_sets = cacheSize / (lineSize * associativity);
@@ -70,11 +70,10 @@ LOCALVAR IL1::CACHE il1("L1 Instruction Cache", IL1::cacheSize, IL1::lineSize, I
 namespace DL1
 {
     // 1st level data cache: 32 kB, 32 B lines, 32-way associative
-    const UINT32 cacheSize = 32*KILO;
+    const UINT32 cacheSize = 8*KILO;
     const UINT32 lineSize = 32;
-    const UINT32 associativity = 32;
+    const UINT32 associativity = 1;
     const CACHE_ALLOC::STORE_ALLOCATION allocation = CACHE_ALLOC::STORE_NO_ALLOCATE;
-
     const UINT32 max_sets = cacheSize / (lineSize * associativity);
     const UINT32 max_associativity = associativity;
 

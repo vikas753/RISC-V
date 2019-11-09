@@ -14,7 +14,9 @@
 #include <cstdlib>
 #include <cstring>
 
-static unsigned long Fibonacci(unsigned long);
+unsigned long Fibonacci(unsigned long);
+
+#define NTIMES 1000
 
 int main(int argc, char **argv)
 {
@@ -24,7 +26,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    unsigned long num = 1000;
+    unsigned long num = 24 , value = 0;
     if (argc == 2)
     {
         std::istringstream is;
@@ -36,6 +38,9 @@ int main(int argc, char **argv)
             return 1;
         }
     }
+   
+    for(int i=0;i<NTIMES;i++)
+      value = Fibonacci(num);
 
     unsigned long fib = Fibonacci(num);
     std::cout << "Entry number " << num << " in the Fibonacci sequence is " << fib << std::endl;
@@ -43,25 +48,11 @@ int main(int argc, char **argv)
 }
 
 
-static unsigned long Fibonacci(unsigned long num)
+unsigned long Fibonacci(unsigned long num)
 {
-    static unsigned long *Cache = 0;
-    static unsigned long CacheLen = 0;
-
-    if (num < CacheLen && Cache[num])
-        return Cache[num];
-
-    unsigned result = 1;
-    if (num > 1)
+    int result = 1;
+    if (num > 2)
         result = Fibonacci(num-1) + Fibonacci(num-2);
-
-    if (num >= CacheLen)
-    {
-        size_t sz = 2*num;
-        Cache = static_cast<unsigned long *>(realloc(Cache, sz*sizeof(*Cache)));
-        memset(&Cache[CacheLen], 0, (sz - CacheLen)*sizeof(*Cache));
-        CacheLen = sz;
-    }
-    Cache[num] = result;
+    
     return result;
 }

@@ -101,6 +101,7 @@ class DIRECT_MAPPED
     VOID Flush() { _tag = 0; }
 };
 
+
 /*!
  *  @brief Cache set with round robin replacement
  */
@@ -108,11 +109,14 @@ template <UINT32 MAX_ASSOCIATIVITY = 4>
 class ROUND_ROBIN
 {
   private:
-    CACHE_TAG _tags[MAX_ASSOCIATIVITY];
+
+  public:
+ 
+    CACHE_TAG _tags[MAX_ASSOCIATIVITY];    
+
     UINT32 _tagsLastIndex;
     UINT32 _nextReplaceIndex;
 
-  public:
     ROUND_ROBIN(UINT32 associativity = MAX_ASSOCIATIVITY)
       : _tagsLastIndex(associativity - 1)
     {
@@ -148,6 +152,7 @@ class ROUND_ROBIN
         end: return result;
     }
 
+   
     VOID Replace(CACHE_TAG tag)
     {
         // g++ -O3 too dumb to do CSE on following lines?!
@@ -207,7 +212,6 @@ class CACHE_BASE
 
     // computed params
     const UINT32 _lineShift;
-    const UINT32 _setIndexMask;
 
     CACHE_STATS SumAccess(bool hit) const
     {
@@ -225,6 +229,8 @@ class CACHE_BASE
     UINT32 NumSets() const { return _setIndexMask + 1; }
 
   public:
+     const UINT32 _setIndexMask;
+
     // constructors/destructors
     CACHE_BASE(std::string name, UINT32 cacheSize, UINT32 lineSize, UINT32 associativity);
 
@@ -351,6 +357,9 @@ class CACHE : public CACHE_BASE
 {
   private:
     SET _sets[MAX_SETS];
+   
+    // Col Associativity : Hash bit for eradicating thrashing problem . 
+    UINT32 HashBitIndex[MAX_SETS];
 
   public:
     // constructors/destructors
@@ -378,6 +387,12 @@ class CACHE : public CACHE_BASE
  *  @return true if all accessed cache lines hit
  */
 
+// Col Associativity : enums for stashing first time bit 
+
+#define FIRST_TIME_MISS       0
+#define NOT_A_FIRST_TIME_MISS 1
+#define COLASSOC 1
+
 template <class SET, UINT32 MAX_SETS, UINT32 STORE_ALLOCATION>
 bool CACHE<SET,MAX_SETS,STORE_ALLOCATION>::Access(ADDRINT addr, UINT32 size, ACCESS_TYPE accessType)
 {
@@ -401,6 +416,33 @@ bool CACHE<SET,MAX_SETS,STORE_ALLOCATION>::Access(ADDRINT addr, UINT32 size, ACC
         // on miss, loads always allocate, stores optionally
         if ( (! localHit) && (accessType == ACCESS_TYPE_LOAD || STORE_ALLOCATION == CACHE_ALLOC::STORE_ALLOCATE))
         {
+            // Col Associativity : Modifying the code to have hashing mechanism 
+            #ifdef COLASSOC
+            if(HashBitIndex[setIndex] == FIRST_TIME_MISS)
+            {
+              // Col Associativity : Go to next indexed location as per hash function as below
+              HashBitIndex[setIndex] = NOT_A_FIRST_TIME_MISS ;
+              UINT32 setIndexSecondHash = ~setIndex & _setIndexMask;
+              SET & setSecondHash = _sets[setIndexSecondHash];
+
+              // Find tag in the next associated location , if it doesnt exist there then replace it there
+              if(setSecondHash.Find(tag) == TRUE)
+              {
+                allHit &= TRUE; 
+              }
+              else
+              {
+                setSecondHash.Replace(tag);
+              }
+              
+            }
+            else
+            {
+              set.Replace(tag);
+              HashBitIndex[setIndex] = FIRST_TIME_MISS ;
+            }
+            #endif
+            
             set.Replace(tag);
         }
 

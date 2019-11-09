@@ -1,0 +1,78 @@
+ Fibonacci Hit ! 
+ Fibonacci Start ! 
+ Branch Starts ! : address :  4195858
+IP : 0x000000000040060e
+0x000000000040060e R 0x00007ffead9c6aec
+IP : 0x0000000000400612
+Taken Conditional Branch print !
+ Branch Starts ! : address :  4195880
+IP : 0x000000000040061d
+0x000000000040061d W 0x00007ffead9c6aec
+IP : 0x0000000000400624
+0x0000000000400624 R 0x00007ffead9c6aec
+IP : 0x0000000000400628
+Taken Conditional Branch print !
+IP : 0x0000000000400633
+0x0000000000400633 W 0x00007ffead9c6aec
+IP : 0x000000000040063a
+0x000000000040063a W 0x00007ffead9c6ae8
+IP : 0x0000000000400641
+0x0000000000400641 W 0x00007ffead9c6ae4
+IP : 0x0000000000400648
+ Branch Starts ! : address :  4195926
+IP : 0x0000000000400652
+0x0000000000400652 R 0x00007ffead9c6ae4
+IP : 0x0000000000400656
+Taken Conditional Branch print !
+ Branch Starts ! : address :  4195926
+IP : 0x000000000040064a
+0x000000000040064a R 0x00007ffead9c6ae8
+0x000000000040064a W 0x00007ffead9c6ae8
+IP : 0x000000000040064e
+0x000000000040064e R 0x00007ffead9c6ae4
+0x000000000040064e W 0x00007ffead9c6ae4
+IP : 0x0000000000400652
+0x0000000000400652 R 0x00007ffead9c6ae4
+IP : 0x0000000000400656
+Taken Conditional Branch print !
+IP : 0x000000000040064a
+0x000000000040064a R 0x00007ffead9c6ae8
+0x000000000040064a W 0x00007ffead9c6ae8
+IP : 0x000000000040064e
+0x000000000040064e R 0x00007ffead9c6ae4
+0x000000000040064e W 0x00007ffead9c6ae4
+IP : 0x0000000000400652
+0x0000000000400652 R 0x00007ffead9c6ae4
+IP : 0x0000000000400656
+Taken Conditional Branch print !
+IP : 0x000000000040064a
+0x000000000040064a R 0x00007ffead9c6ae8
+0x000000000040064a W 0x00007ffead9c6ae8
+IP : 0x000000000040064e
+0x000000000040064e R 0x00007ffead9c6ae4
+0x000000000040064e W 0x00007ffead9c6ae4
+IP : 0x0000000000400652
+0x0000000000400652 R 0x00007ffead9c6ae4
+IP : 0x0000000000400656
+Taken Conditional Branch print !
+IP : 0x0000000000400658
+0x0000000000400658 R 0x00007ffead9c6af0
+ Fibonacci Exit ! 
+IP : 0x0000000000400659
+0x0000000000400659 R 0x00007ffead9c6af8
+Unloading /Users/Grad/vveerabathini/www/eece7352/pin_exp/RISC-V/pin-3.11-97998-g7ecce2dac-gcc-linux/source/tools/ManualExamples/obj-intel64/fibo_1_test.so
+Unloading /lib64/ld-linux-x86-64.so.2
+Unloading [vdso]
+Unloading /lib64/libstdc++.so.6
+Unloading /lib64/libm.so.6
+Unloading /lib64/libgcc_s.so.1
+Unloading /lib64/libc.so.6
+ Syscall Instruction count = 0
+ Stack Access Instruction count = 16
+ Branch Instruction count = 4
+ Memory write count = 10
+ Memory read count = 14
+ Total Instruction count = 25
+ Min instruction address = 140731811130084
+ Max instruction address = 140731811130104
+ 4kb Distinct Memory Page access count = 0#eof

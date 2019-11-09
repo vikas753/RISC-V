@@ -1,0 +1,7 @@
+Without Swap : 9,10
+Before SwapP : 9,10
+With SwapP : 10,9
+ Swap addresses : 0x7ffdd68f6f78,0x7ffdd68f6f7c
+ Swap addresses P2 : 0x7ffdd68f6f7c,0x7ffdd68f6f78
+ Swap addresses values SwapP2 : 9,10
+With SwapR :9,10
