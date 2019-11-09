@@ -18,6 +18,7 @@ mul:
         mv      a0, zero
         sw      a0, -12(s0)
         j       .LBB0_6
+		# compute modulus by 2 and see if it equals to zero
 .LBB0_3:
         lw      a0, -20(s0)
         srli    a1, a0, 31
@@ -27,6 +28,8 @@ mul:
         mv      a1, zero
         bne     a0, a1, .LBB0_5
         j       .LBB0_4
+		# left shift operand 1 by 2 and operand 2 is right shifted by 1 , with a recursive
+		# call to multiply at end
 .LBB0_4:
         lw      a0, -16(s0)
         slli    a0, a0, 1
@@ -58,8 +61,10 @@ main:
         addi    s0, sp, 32
         mv      a0, zero
         sw      a0, -12(s0)
+		#operand 1
         addi    a1, zero, 10
         sw      a1, -16(s0)
+		#operand 2
         addi    a1, zero, 20
         sw      a1, -20(s0)
         lw      a1, -16(s0)
@@ -68,6 +73,7 @@ main:
         add     a0, zero, a1
         add     a1, zero, a2
         call    mul
+		# output value
         sw      a0, -24(s0)
         lw      s0, 24(sp)
         lw      ra, 28(sp)
